@@ -170,6 +170,8 @@
       }
       var repeating = false, timer_id, repeat_cnt, cube_stash, start_hash;
       function repeat() {
+        if (repeating) { stop(); return; }
+        repeating = true;
         repeat_cnt = 0;
         cube_stash = new vtile.cube(3);
         cube_stash.tiles = cube.tiles;
