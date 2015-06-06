@@ -5,15 +5,32 @@
   </head>
   <body>
     <script>
-      var a = new vtile.cube(3);
-      a.tiles[2] = [0, 0, 0, 0, 0, 0, 1, 2, 3];
-      a.tiles[5] = [4, 0, 0, 5, 0, 0, 6, 0, 0];
-      a.tiles[3] = [7, 8, 9, 0, 0, 0, 0, 0, 0];
-      a.tiles[4] = [0, 0, 10, 0, 0, 11, 0, 0, 12];
-      a.tiles[0] = [31, 32, 33, 34, 35, 36, 37, 38, 39];
-      a.tiles[1] = [41, 42, 43, 44, 45, 46, 47, 48, 49];
-      a.turn(0, 0, false);
-      console.log(a.tiles);
+      document.write('Test running...<br>');
+      // An automated test
+      var c = new vtile.cube(7);
+      var h = c.hash(), i, succeeded = true;
+      for (i = 0; i < 6; ++i) {
+        for (j = 0; j < 7; ++j) {
+          c.turn(i, j, true);
+          c.turn(i, j, false);
+          if (c.hash() != h) { succeeded = false; break; }
+          c.turn(i, j, false);
+          c.turn(i, j, false);
+          c.turn(i, j, true);
+          c.turn(i, j, true);
+          if (c.hash() != h) { succeeded = false; break; }
+          c.turn(i, j, false);
+          c.turn(i, j, false);
+          c.turn(i, j, false);
+          c.turn(i, j, false);
+          if (c.hash() != h) { succeeded = false; break; }
+        }
+        if (!succeeded) {
+          document.write('Incorrect answer on face #' + i + ' and layer #' + j);
+          break;
+        }
+      }
+      document.write(succeeded ? '<br>Tests passed<br>' : '<br>Test failed<br>');
     </script>
   </body>
 </html>
