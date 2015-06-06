@@ -102,7 +102,8 @@
     <div id='main'>
       <h1>Magic simulator</h1>
       <h2>A 3x3x3 Magic Cube simulator based on the vola-tile library and ʀoToᴙ.js</h2>
-      <input type='text' placeholder="R U2 R' M">
+      <input id='cmd-input' type='text' placeholder="R U2 R' M">
+      <input type='button' value='Go' onclick='move()'>
       <div id='cube-display' class='cube'>
         <div id='f0' class='face'><div class='centre-text'>F</div></div>
         <div id='f1' class='face'><div class='centre-text'>B</div></div>
@@ -113,6 +114,7 @@
       </div>
     </div>
 
+    <script src='../vola-tile.js'></script>
     <script src='rotor.js'></script>
     <script>
       // Add the colour display
@@ -122,6 +124,7 @@
         for (j = 0; j < 3; ++j)
           for (k = 0; k < 3; ++k) {
             tile = document.createElement('div');
+            tile.setAttribute('id', 'tile-' + i.toString() + j.toString() + k.toString());
             tile.classList.add('tile');
             tile.classList.add('t' + String.fromCharCode(i + 48));
             tile.style.top = Math.round(j * 160 / 3).toString() + 'px';
@@ -130,6 +133,36 @@
           }
       }
       rotor(document.getElementById('cube-display'));
+
+      var cube = new vtile.cube(3);
+      function move() {
+        var s = document.getElementById('cmd-input').value.toUpperCase().split(' '), i, j, k;
+        for (i = 0; i < 6; ++i)
+          for (j = 0; j < 3; ++j)
+            for (k = 0; k < 3; ++k)
+              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
+                .classList.remove('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
+        // Do operations
+        var ch, face, layer, ccw, dup,
+          face_map = {'F': 0, 'B': 1, 'U': 2, 'D': 3, 'L': 4, 'R': 5, 'M': 4, 'E': 3, 'S': 0},
+          layer_map = {'F': 0, 'B': 0, 'U': 0, 'D': 0, 'L': 0, 'R': 0, 'M': 1, 'E': 1, 'S': 1};
+        for (i = 0; i < s.length; ++i) {
+          ch = s[i].charAt(0);
+          face = face_map[ch];
+          layer = layer_map[ch];
+          ch = s[i].charAt(s[i].length - 1);
+          ccw = ch === "'"; dup = ch === '2';
+          if (face >= 0 && face < 6 && layer >= 0 && layer < 3) {
+            cube.turn(face, layer, ccw);
+            if (dup) cube.turn(face, layer, ccw);
+          }
+        }
+        for (i = 0; i < 6; ++i)
+          for (j = 0; j < 3; ++j)
+            for (k = 0; k < 3; ++k)
+              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
+                .classList.add('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
+      }
     </script>
   </body>
 </html>
