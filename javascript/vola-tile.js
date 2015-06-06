@@ -32,6 +32,21 @@
     }
   };
   vtile.cube.prototype = {
+    // A simple hash function.
+    // It may not generate so few collisions as MD5 (or similar) does
+    // but is enough for a simple 6-face cube where every tile is 0~5.
+    hash: function () {
+      var s = this.size, ret = 0, i, j;
+      var t = 12138 + (s + this.tiles[0][0] * 18906416) * (s + 0xcafe);
+      t = (t >> 3) + this.tiles[3][(s * s) >> 1] + this.tiles[4][1];
+      ret = t << 1;
+      for (i = 5; i >= 0; --i)
+        for (j = 0; j < s * s; ++j) {
+          t = (t ^ (this.tiles[i][j] * 0x1121011)) >> 1;
+          ret += t * (i + j + 637613);
+        }
+      return ret & 0x7fffffff;
+    },
     // Examples in a 4x4x4 cube:
     // R  = (FACE_R, 0, false) = (FACE_L, 3, true)
     // R' = (FACE_R, 0, true)  = (FACE_L, 3, false)
