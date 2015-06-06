@@ -104,6 +104,8 @@
       <h2>A 3x3x3 Magic Cube simulator based on the vola-tile library and ʀoToᴙ.js</h2>
       <input id='cmd-input' type='text' placeholder="R U2 R' M">
       <input type='button' value='Go' onclick='move()'>
+      <input id='rpt-button' type='button' value='Repeat' onclick='repeat()'>
+      <span id='rpt-display'></span>
       <div id='cube-display' class='cube'>
         <div id='f0' class='face'><div class='centre-text'>F</div></div>
         <div id='f1' class='face'><div class='centre-text'>B</div></div>
@@ -135,14 +137,7 @@
       rotor(document.getElementById('cube-display'));
 
       var cube = new vtile.cube(3);
-      function move() {
-        var s = document.getElementById('cmd-input').value.toUpperCase().split(' '), i, j, k;
-        for (i = 0; i < 6; ++i)
-          for (j = 0; j < 3; ++j)
-            for (k = 0; k < 3; ++k)
-              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
-                .classList.remove('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
-        // Do operations
+      function do_move(s) {
         var ch, face, layer, ccw, dup,
           face_map = {'F': 0, 'B': 1, 'U': 2, 'D': 3, 'L': 4, 'R': 5, 'M': 4, 'E': 3, 'S': 0},
           layer_map = {'F': 0, 'B': 0, 'U': 0, 'D': 0, 'L': 0, 'R': 0, 'M': 1, 'E': 1, 'S': 1};
@@ -157,11 +152,50 @@
             if (dup) cube.turn(face, layer, ccw);
           }
         }
+      }
+      function move() {
+        var i, j, k;
+        for (i = 0; i < 6; ++i)
+          for (j = 0; j < 3; ++j)
+            for (k = 0; k < 3; ++k)
+              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
+                .classList.remove('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
+        // Do operations
+        do_move(document.getElementById('cmd-input').value.toUpperCase().split(' '));
         for (i = 0; i < 6; ++i)
           for (j = 0; j < 3; ++j)
             for (k = 0; k < 3; ++k)
               document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
                 .classList.add('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
+      }
+      var repeating = false, timer_id, repeat_cnt, cube_stash, start_hash;
+      function repeat() {
+        repeat_cnt = 0;
+        cube_stash = new vtile.cube(3);
+        cube_stash.tiles = cube.tiles;
+        start_hash = cube.hash();
+        document.getElementById('rpt-button').value = 'Stop';
+        var cmds = document.getElementById('cmd-input').value.toUpperCase().split(' ');
+        document.getElementById('rpt-display').textContent = '';
+        timer_id = setInterval((function (cmds) { return function () {
+          document.getElementById('rpt-display').textContent = 'Repeating... ' + repeat_cnt + ' repeats done.';
+          for (var i = 0; i < 100; ++i) {
+            ++repeat_cnt;
+            do_move(cmds);
+            if (cube.hash() === start_hash) { stop(); break; }
+          }
+        }; }(cmds)), 1000);
+      }
+      function stop() {
+        repeating = false;
+        clearInterval(timer_id);
+        document.getElementById('rpt-button').value = 'Repeat';
+        var result_msg = '';
+        if (cube.hash() === start_hash)
+          result_msg = 'Backed to initial state after ' + repeat_cnt + ' repeats.';
+        else result_msg = 'Failed to get back after ' + repeat_cnt + ' repeats, restored.';
+        document.getElementById('rpt-display').textContent = result_msg;
+        cube = cube_stash;
       }
     </script>
   </body>
