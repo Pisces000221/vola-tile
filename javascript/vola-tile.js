@@ -10,7 +10,15 @@
     // F operation
     [FACE_U | RPOS, FACE_R | COL | RVAL, FACE_D, FACE_L | COL | RVAL | RPOS],
     // F' operation
-    [FACE_U | RPOS | RVAL, FACE_L | COL | RPOS, FACE_D | RVAL, FACE_R | COL]
+    [FACE_U | RPOS | RVAL, FACE_L | COL | RPOS, FACE_D | RVAL, FACE_R | COL],
+    // U operation
+    [FACE_B, FACE_R, FACE_F, FACE_L],
+    // U' operation
+    [FACE_B, FACE_L, FACE_F, FACE_R],
+    // L operation
+    [FACE_U | COL, FACE_F | COL, FACE_D | COL | RVAL, FACE_B | COL | RVAL | RPOS],
+    // L' operation
+    [FACE_U | COL | RVAL, FACE_B | COL | RVAL | RPOS, FACE_D | COL, FACE_F | COL]
   ];
 
   vtile.cube = function (size) {
