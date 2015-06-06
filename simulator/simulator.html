@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vola-tile simulator</title>
+    <meta charset='utf-8'>
+    <style>
+      body {
+        font-family: Arial, Helvetica, Liberation Sans, sans-serif;
+        background: #eee;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+
+      #main {
+        width: 50%;
+        margin: 0 auto;
+      }
+
+      .cube {
+        float: left;
+        width: 160px;
+        height: 160px;
+        margin: 160px;
+        cursor: pointer;
+        -moz-transform-style: preserve-3d;
+        -webkit-transform-style: preserve-3d;
+        -ms-transform-style: preserve-3d;
+        -o-transform-style: preserve-3d;
+      }
+      /* Styles for faces. */
+      .face {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        outline: 1px solid #666;
+        -moz-backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        -ms-backface-visibility: hidden;
+        -o-backface-visibility: hidden;
+      }
+      #f0 {
+        -moz-transform: translateZ(80px);
+        -webkit-transform: translateZ(80px);
+        -ms-transform: translateZ(80px);
+        -o-transform: translateZ(80px);
+      }
+      #f5 {
+        -moz-transform: rotateY(90deg) translateZ(80px);
+        -webkit-transform: rotateY(90deg) translateZ(80px);
+        -ms-transform: rotateY(90deg) translateZ(80px);
+        -o-transform: rotateY(90deg) translateZ(80px);
+      }
+      #f1 {
+        -moz-transform: rotateY(180deg) translateZ(80px);
+        -webkit-transform: rotateY(180deg) translateZ(80px);
+        -ms-transform: rotateY(180deg) translateZ(80px);
+        -o-transform: rotateY(180deg) translateZ(80px);
+      }
+      #f4 {
+        -moz-transform: rotateY(-90deg) translateZ(80px);
+        -webkit-transform: rotateY(-90deg) translateZ(80px);
+        -ms-transform: rotateY(-90deg) translateZ(80px);
+        -o-transform: rotateY(-90deg) translateZ(80px);
+      }
+      #f2 {
+        -moz-transform: rotateX(90deg) translateZ(80px);
+        -webkit-transform: rotateX(90deg) translateZ(80px);
+        -ms-transform: rotateX(90deg) translateZ(80px);
+        -o-transform: rotateX(90deg) translateZ(80px);
+      }
+      #f3 {
+        -moz-transform: rotateX(-90deg) translateZ(80px);
+        -webkit-transform: rotateX(-90deg) translateZ(80px);
+        -ms-transform: rotateX(-90deg) translateZ(80px);
+        -o-transform: rotateX(-90deg) translateZ(80px);
+      }
+      .centre-text {
+        font-size: 60px;
+        opacity: 0.3;
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        z-index: 9999;
+      }
+      /* Styles for tiles. */
+      .tile {
+        width: 33.33%;
+        height: 33.33%;
+        position: absolute;
+        outline: 1px solid #666;
+      }
+      .t0 { background-color: #0046ad; }
+      .t1 { background-color: #009b48; }
+      .t2 { background-color: #ffd500; }
+      .t3 { background-color: #ffffff; }
+      .t4 { background-color: #ff5800; }
+      .t5 { background-color: #b71234; }
+    </style>
+  </head>
+  <body>
+    <div id='main'>
+      <h1>Magic simulator</h1>
+      <h2>A 3x3x3 Magic Cube simulator based on the vola-tile library and ʀoToᴙ.js</h2>
+      <input id='cmd-input' type='text' placeholder="R U2 R' M">
+      <input type='button' value='Go' onclick='move()'>
+      <input id='rpt-button' type='button' value='Repeat' onclick='repeat()'>
+      <span id='rpt-display'></span>
+      <div id='cube-display' class='cube'>
+        <div id='f0' class='face'><div class='centre-text'>F</div></div>
+        <div id='f1' class='face'><div class='centre-text'>B</div></div>
+        <div id='f2' class='face'><div class='centre-text'>U</div></div>
+        <div id='f3' class='face'><div class='centre-text'>D</div></div>
+        <div id='f4' class='face'><div class='centre-text'>L</div></div>
+        <div id='f5' class='face'><div class='centre-text'>R</div></div>
+      </div>
+    </div>
+
+    <script src='vola-tile.min.js'></script>
+    <script src='rotor.min.js'></script>
+    <script src='simulator.js'></script>
+  </body>
+</html>
