@@ -136,7 +136,7 @@
           }
       }
       rotor(document.getElementById('cube-display'));
-      function init_disp() {
+      function remove_last_cube() {
         var i, j, k;
         for (i = 0; i < 6; ++i)
           for (j = 0; j < 3; ++j)
@@ -144,7 +144,7 @@
               document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
                 .classList.remove('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
       }
-      function fini_disp() {
+      function show_cur_cube() {
         var i, j, k;
         for (i = 0; i < 6; ++i)
           for (j = 0; j < 3; ++j)
@@ -154,7 +154,7 @@
       }
 
       var cube = new vtile.cube(3);
-      function do_move(s) {
+      function parse_and_exec(s) {
         var ch, face, layer, ccw, dup,
           face_map = {'F': 0, 'B': 1, 'U': 2, 'D': 3, 'L': 4, 'R': 5, 'M': 4, 'E': 3, 'S': 0},
           layer_map = {'F': 0, 'B': 0, 'U': 0, 'D': 0, 'L': 0, 'R': 0, 'M': 1, 'E': 1, 'S': 1};
@@ -171,9 +171,9 @@
         }
       }
       function move() {
-        init_disp();
-        do_move(document.getElementById('cmd-input').value.toUpperCase().split(' '));
-        fini_disp();
+        remove_last_cube();
+        parse_and_exec(document.getElementById('cmd-input').value.toUpperCase().split(' '));
+        show_cur_cube();
       }
       var repeat_cnt, cube_stash, start_hash;
       function repeat() {
@@ -192,9 +192,9 @@
           'Backed to initial state after ' + repeat_cnt.toString() + ' repeats.';
       }
       function shuffle() {
-        init_disp();
+        remove_last_cube();
         cube.shuffle();
-        fini_disp();
+        show_cur_cube();
       }
     </script>
   </body>
