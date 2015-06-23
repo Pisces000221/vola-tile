@@ -185,7 +185,7 @@
         document.getElementById('rpt-display').textContent = '';
         do {
           ++repeat_cnt;
-          do_move(cmds);
+          parse_and_exec(cmds);
           if (cube.hash() === start_hash) break;
         } while (1);
         document.getElementById('rpt-display').textContent =
@@ -196,6 +196,10 @@
         cube.shuffle();
         show_cur_cube();
       }
+
+      document.getElementById('cmd-input').onkeydown = function (e) {
+        if (e.keyCode === 13) move();
+      };
     </script>
   </body>
 </html>
