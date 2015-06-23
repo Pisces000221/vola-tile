@@ -1,4 +1,4 @@
-(function (window) {
+(function (window, Math) {
   'use strict';
   var vtile = {},
       FACE_F = 0, FACE_B = 1,
@@ -95,8 +95,19 @@
           }
         this.tiles[face] = new_face;
       }
+    },
+    // Turns the cube randomly.
+    shuffle: function () {
+      var ct = Math.floor(Math.random() * 30) + 30;
+      var face, layer, counter_clockwise;
+      do {
+        face = Math.floor(Math.random() * 6);
+        layer = Math.floor(Math.random() * this.size);
+        counter_clockwise = Math.random() < 0.5;
+        this.turn(face, layer, counter_clockwise);
+      } while (--ct);
     }
   };
 
   window.vtile = vtile;
-}(window));
+}(window, Math));

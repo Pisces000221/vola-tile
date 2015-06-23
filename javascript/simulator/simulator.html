@@ -105,6 +105,7 @@
       <input id='cmd-input' type='text' placeholder="R U2 R' M">
       <input type='button' value='Go' onclick='move()'>
       <input id='rpt-button' type='button' value='Repeat' onclick='repeat()'>
+      <input id='shuffle-button' type='button' value='Shuffle' onclick='shuffle()'>
       <span id='rpt-display'></span>
       <div id='cube-display' class='cube'>
         <div id='f0' class='face'><div class='centre-text'>F</div></div>
@@ -198,6 +199,20 @@
         else result_msg = 'Failed to get back after ' + repeat_cnt + ' repeats, restored.';
         document.getElementById('rpt-display').textContent = result_msg;
         cube = cube_stash;
+      }
+      function shuffle() {
+        var i, j, k;
+        for (i = 0; i < 6; ++i)
+          for (j = 0; j < 3; ++j)
+            for (k = 0; k < 3; ++k)
+              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
+                .classList.remove('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
+        cube.shuffle();
+        for (i = 0; i < 6; ++i)
+          for (j = 0; j < 3; ++j)
+            for (k = 0; k < 3; ++k)
+              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
+                .classList.add('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
       }
     </script>
   </body>
