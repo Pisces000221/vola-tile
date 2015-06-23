@@ -136,6 +136,22 @@
           }
       }
       rotor(document.getElementById('cube-display'));
+      function init_disp() {
+        var i, j, k;
+        for (i = 0; i < 6; ++i)
+          for (j = 0; j < 3; ++j)
+            for (k = 0; k < 3; ++k)
+              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
+                .classList.remove('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
+      }
+      function fini_disp() {
+        var i, j, k;
+        for (i = 0; i < 6; ++i)
+          for (j = 0; j < 3; ++j)
+            for (k = 0; k < 3; ++k)
+              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
+                .classList.add('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
+      }
 
       var cube = new vtile.cube(3);
       function do_move(s) {
@@ -155,19 +171,9 @@
         }
       }
       function move() {
-        var i, j, k;
-        for (i = 0; i < 6; ++i)
-          for (j = 0; j < 3; ++j)
-            for (k = 0; k < 3; ++k)
-              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
-                .classList.remove('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
-        // Do operations
+        init_disp();
         do_move(document.getElementById('cmd-input').value.toUpperCase().split(' '));
-        for (i = 0; i < 6; ++i)
-          for (j = 0; j < 3; ++j)
-            for (k = 0; k < 3; ++k)
-              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
-                .classList.add('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
+        fini_disp();
       }
       var repeat_cnt, cube_stash, start_hash;
       function repeat() {
@@ -186,18 +192,9 @@
           'Backed to initial state after ' + repeat_cnt.toString() + ' repeats.';
       }
       function shuffle() {
-        var i, j, k;
-        for (i = 0; i < 6; ++i)
-          for (j = 0; j < 3; ++j)
-            for (k = 0; k < 3; ++k)
-              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
-                .classList.remove('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
+        init_disp();
         cube.shuffle();
-        for (i = 0; i < 6; ++i)
-          for (j = 0; j < 3; ++j)
-            for (k = 0; k < 3; ++k)
-              document.getElementById('tile-' + i.toString() + j.toString() + k.toString())
-                .classList.add('t' + String.fromCharCode(cube.tiles[i][j * 3 + k] + 48));
+        fini_disp();
       }
     </script>
   </body>
